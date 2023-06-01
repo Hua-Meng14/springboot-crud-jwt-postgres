@@ -1,5 +1,6 @@
 package com.example.adminuserjwt.auth;
 
+import com.example.adminuserjwt.config.JwtService;
 import com.example.adminuserjwt.token.Token;
 import com.example.adminuserjwt.token.TokenRepository;
 import com.example.adminuserjwt.user.User;
@@ -8,13 +9,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.net.http.HttpHeaders;
 
 @Service
 @RequiredArgsConstructor
@@ -35,9 +37,9 @@ public class AuthenticationService {
                 .build();
 
         var savedUser = userRepository.save(user);
-        var jwtToken = jwtService.generateToken(user);
-        var refreshToken = jwtService.generateRefreshToken(user);
-        saveUserToken(savedUser, jwtToken);
+        var jwtToken = jwtService.generateToken((UserDetails) user);
+        var refreshToken = jwtService.generateRefreshToken((UserDetails) user);
+        savedUserToken(savedUser, jwtToken);
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
@@ -55,8 +57,8 @@ public class AuthenticationService {
         var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow();
 
-        var jwtToken = jwtService.generateToken(user);
-        var refreshToken = jwtService.generateRefreshToken(user);
+        var jwtToken = jwtService.generateToken((UserDetails) user);
+        var refreshToken = jwtService.generateRefreshToken((UserDetails) user);
         revokeAllUserTokens(user);
         savedUserToken(user, jwtToken);
         return AuthenticationResponse.builder()
@@ -65,7 +67,7 @@ public class AuthenticationService {
                 .build();
     }
 
-    public void saveUserToken(User user, String jwtToken) {
+    public void savedUserToken(User user, String jwtToken) {
         var token = Token.builder()
                 .user(user)
                 .token(jwtToken)
@@ -99,12 +101,12 @@ public class AuthenticationService {
         refreshToken = authHeader.substring(7);
         userEmail = jwtService.extractUsername(refreshToken);
         if(userEmail != null) {
-            var user = this.userRepository.findByEmail(userEmail)
+            UserDetails user = (UserDetails) this.userRepository.findByEmail(userEmail)
                     .orElseThrow();
-            if(jwtService.isTokenValid(refreshToken, user)) {
-                var accessToken = jwtService.generateToken(user);
-                revokeAllUserTokens(user);
-                saveUserToken(user, accessToken);
+            if(jwtService.isTokenValid(refreshToken,  user)) {
+                var accessToken = jwtService.generateToken( user);
+                revokeAllUserTokens((User) user);
+                savedUserToken((User) user, accessToken);
 
                 var authResponse = AuthenticationResponse.builder()
                         .accessToken(accessToken)
