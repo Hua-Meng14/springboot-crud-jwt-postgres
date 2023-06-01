@@ -1,6 +1,6 @@
-package com.example.adminuserjwt.Token;
+package com.example.adminuserjwt.token;
 
-import com.example.adminuserjwt.User.User;
+import com.example.adminuserjwt.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

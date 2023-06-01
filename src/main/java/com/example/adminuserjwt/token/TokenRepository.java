@@ -1,4 +1,4 @@
-package com.example.adminuserjwt.Token;
+package com.example.adminuserjwt.token;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

@@ -1,4 +1,4 @@
-package com.example.adminuserjwt.User;
+package com.example.adminuserjwt.user;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

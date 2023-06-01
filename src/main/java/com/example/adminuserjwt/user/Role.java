@@ -1,20 +1,18 @@
-package com.example.adminuserjwt.User;
+package com.example.adminuserjwt.user;
 
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.example.adminuserjwt.User.Permission.ADMIN_READ;
-import static com.example.adminuserjwt.User.Permission.ADMIN_UPDATE;
-import static com.example.adminuserjwt.User.Permission.ADMIN_CREATE;
-import static com.example.adminuserjwt.User.Permission.ADMIN_DELETE;
+import static com.example.adminuserjwt.user.Permission.ADMIN_READ;
+import static com.example.adminuserjwt.user.Permission.ADMIN_UPDATE;
+import static com.example.adminuserjwt.user.Permission.ADMIN_CREATE;
+import static com.example.adminuserjwt.user.Permission.ADMIN_DELETE;
 
 
 @RequiredArgsConstructor

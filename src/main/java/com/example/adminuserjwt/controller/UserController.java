@@ -1,4 +1,4 @@
-package com.example.adminuserjwt.Controller;
+package com.example.adminuserjwt.controller;
 
 
 import org.springframework.http.ResponseEntity;
