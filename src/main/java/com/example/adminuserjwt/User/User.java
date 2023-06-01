@@ -1,5 +1,6 @@
 package com.example.adminuserjwt.User;
 
+import com.example.adminuserjwt.Token.Token;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
+import java.util.List;
 
 @Data
 @Builder
@@ -32,7 +34,7 @@ public class User {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities(){
-        return role.getAuthoritires();
+        return role.getAuthorities();
     }
 
     @Override
